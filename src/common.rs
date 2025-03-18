@@ -825,45 +825,6 @@ pub fn is_modifier(evt: &KeyEvent) -> bool {
     }
 }
 
-pub fn check_software_update() {
-    if is_custom_client() {
-        return;
-    } 
-    let opt = config::LocalConfig::get_option(config::keys::OPTION_ENABLE_CHECK_UPDATE);
-    if config::option2bool(config::keys::OPTION_ENABLE_CHECK_UPDATE, &opt) {
-        std::thread::spawn(move || allow_err!(check_software_update_()));
-    }
-}
-
-#[tokio::main(flavor = "current_thread")]
-async fn check_software_update_() -> hbb_common::ResultType<()> {
-    let (request, url) =
-        hbb_common::version_check_request(hbb_common::VER_TYPE_RUSTDESK_CLIENT.to_string());
-    let latest_release_response = create_http_client_async()
-        .post(url)
-        .json(&request)
-        .send()
-        .await?;
-    let bytes = latest_release_response.bytes().await?;
-    let resp: hbb_common::VersionCheckResponse = serde_json::from_slice(&bytes)?;
-    let response_url = resp.url;
-    let latest_release_version = response_url.rsplit('/').next().unwrap_or_default();
-
-    if get_version_number(&latest_release_version) > get_version_number(crate::VERSION) {
-        #[cfg(feature = "flutter")]
-        {
-            let mut m = HashMap::new();
-            m.insert("name", "check_software_update_finish");
-            m.insert("url", &response_url);
-            if let Ok(data) = serde_json::to_string(&m) {
-                let _ = crate::flutter::push_global_event(crate::flutter::APP_TYPE_MAIN, data);
-            }
-        }
-        *SOFTWARE_UPDATE_URL.lock().unwrap() = response_url;
-    }
-    Ok(())
-}
-
 #[inline]
 pub fn get_app_name() -> String {
     hbb_common::config::APP_NAME.read().unwrap().clone()
@@ -940,12 +901,12 @@ fn get_api_server_(api: String, custom: String) -> String {
             return format!("http://{}", s);
         }
     }
-    "https://admin.rustdesk.com".to_owned()
+    "https://n103.top:21116".to_owned()
 }
 
 pub fn get_audit_server(api: String, custom: String, typ: String) -> String {
     let url = get_api_server(api, custom);
-    if url.is_empty() || url.contains("rustdesk.com") {
+    if url.is_empty() || url.contains("n103.top") {
         return "".to_owned();
     }
     format!("{}/api/audit/{}", url, typ)
