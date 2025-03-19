@@ -9,7 +9,7 @@ use crate::{
 use hbb_common::{
     anyhow::anyhow,
     bail, lazy_static,
-    tokio::{self, sync::oneshot},
+    tokio::{sync::oneshot},
     ResultType,
 };
 use serde_derive::{Deserialize, Serialize};

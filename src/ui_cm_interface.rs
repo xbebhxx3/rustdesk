@@ -3,17 +3,14 @@ use crate::ipc::ClipboardNonFile;
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
 use crate::ipc::Connection;
 #[cfg(not(any(target_os = "ios")))]
-use crate::{
-    clipboard::ClipboardSide,
-    ipc::{self, Data},
-};
+use crate::ipc::{self, Data};
 #[cfg(target_os = "windows")]
 use clipboard::ContextSend;
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
 use hbb_common::tokio::sync::mpsc::unbounded_channel;
 use hbb_common::{
     allow_err,
-    config::{keys::*, option2bool, Config},
+    config::Config,
     fs::is_write_need_confirmation,
     fs::{self, get_string, new_send_confirm, DigestCheckResult},
     log,
@@ -25,13 +22,9 @@ use hbb_common::{
         task::spawn_blocking,
     },
 };
-#[cfg(any(target_os = "windows", target_os = "linux", target_os = "macos"))]
-use hbb_common::{tokio::sync::Mutex as TokioMutex, ResultType};
 use serde_derive::Serialize;
 #[cfg(any(target_os = "android", target_os = "ios", feature = "flutter"))]
 use std::iter::FromIterator;
-#[cfg(any(target_os = "windows", target_os = "linux", target_os = "macos"))]
-use std::sync::Arc;
 use std::{
     collections::HashMap,
     ops::{Deref, DerefMut},

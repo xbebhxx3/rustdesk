@@ -4,7 +4,7 @@ use hbb_common::{
     allow_err,
     bytes::Bytes,
     config::{
-        self, keys::*, option2bool, Config, LocalConfig, PeerConfig, CONNECT_TIMEOUT,
+        self, keys::*, Config, LocalConfig, PeerConfig, CONNECT_TIMEOUT,
         RENDEZVOUS_PORT,
     },
     directories_next,

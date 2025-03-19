@@ -19,7 +19,7 @@ use rdev::{CGEventSourceStateID, CGEventTapLocation, VirtualInput};
 use scrap::wayland::pipewire::RDP_SESSION_INFO;
 use std::{
     convert::TryFrom,
-    ops::{Deref, DerefMut, Sub},
+    ops::{Deref, DerefMut},
     sync::atomic::{AtomicBool, Ordering},
     thread,
     time::{self, Duration, Instant},

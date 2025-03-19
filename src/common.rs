@@ -8,14 +8,12 @@ use std::{
 use serde_json::{json, Map, Value};
 
 use hbb_common::{
-    allow_err,
     anyhow::{anyhow, Context},
     bail, base64,
     bytes::Bytes,
     config::{self, Config, CONNECT_TIMEOUT, READ_TIMEOUT, RENDEZVOUS_PORT},
     futures::future::join_all,
-    futures_util::future::poll_fn,
-    get_version_number, log,
+    futures_util::future::poll_fn, log,
     message_proto::*,
     protobuf::{Enum, Message as _},
     rendezvous_proto::*,

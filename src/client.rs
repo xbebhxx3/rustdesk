@@ -57,7 +57,6 @@ use hbb_common::{
     sha2::{Digest, Sha256},
     socket_client::{connect_tcp, connect_tcp_local, ipv4_to_ipv6},
     sodiumoxide::{base64, crypto::sign},
-    tcp::FramedStream,
     timeout,
     tokio::{
         self,
